@@ -20,6 +20,7 @@ int main(int argc, char **argv) {
 		usleep(1000000);
 	
 	}
+	
 	shutdown_display(fd);
 
 	return 0;
