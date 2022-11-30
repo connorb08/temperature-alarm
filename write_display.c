@@ -36,6 +36,7 @@ int init_display() {
 	fd = open("/dev/i2c-1", O_RDWR);
 	if ( fd < 0 ) {
 		// Error
+		printf("error opening\n");
 		close(fd);
 	}
 
@@ -177,7 +178,6 @@ int write_display(int fd, double value) {
 		exit(1);
 	}
 
-	printf("value: %f\n", value);
 	return 0;
 }
 
