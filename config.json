@@ -1,6 +1,14 @@
 {
     "temp_low" : 60,
     "temp_high" : 70,
-    "alert_interval" : 30,
-    "volume" : 0
+    "alert_interval" : 1,
+    "volume" : 70,
+    "phone_numbers" : [
+        123,
+        456
+    ],
+    "emails" : [
+        "@gmail",
+        "email"
+    ]
 }

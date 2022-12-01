@@ -17,6 +17,10 @@ class Controller():
         self.alert_interval = config['alert_interval']
         self.volume = config['volume']
         self.lastAlert = datetime.datetime(2000, 1, 1, 1, 1, 1)
+        self.emails = config['emails']
+        self.phones = config['phone_numbers']
+
+        print(self.emails, self.phones)
     
     def shutdown(self):
         args = ['c']
@@ -30,6 +34,7 @@ class Controller():
         if (mins > self.alert_interval):
             # alert()
             print("alert")
+            self.playAudio()
             #send notificaiton
             #sound alarm
             self.lastAlert = datetime.datetime.now()
@@ -37,7 +42,20 @@ class Controller():
         return
 
     def playAudio(self):
-        pass
+        subprocess.run(['amixer', 'sset', 'Master', f'{self.volume}%'])
+        subprocess.run(['aplay', 'alert.wav'])
+        return
+
+    def sendNotifications(self):
+        for email in self.emails:
+            #send email
+            pass
+
+        for number in self.phones:
+            #send text
+            pass
+
+        return
 
     def getTemp(self, args=[]):
         args.insert(0, './controller')
@@ -52,12 +70,29 @@ class Controller():
                 continue
         return float(str(out)[2:-1])
 
+    def tester(self, temp=0):
+
+        args = ['./test']
+
+        if temp != 0:
+            temp = str(temp)
+            args.append(temp)
+        
+        popen = subprocess.Popen(args, stdout=subprocess.PIPE)
+        popen.wait()
+        out = popen.stdout.read()
+        return float(out)
+
 def main():
     x = Controller()
     temps = []
     while (True):
         #catch q or ctrl c
-        temps.append(x.getTemp())
+        if (len(temps) > 0):
+            temp = x.tester(temps[-1])
+        else:
+            temp = x.tester()
+        temps.append(temp)
         avg = (sum(temps) / len(temps))
         print(f"avg: {avg}")
         if (len(temps) >= 10):
