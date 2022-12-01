@@ -1,6 +1,6 @@
 {
     "temp_low" : 60,
-    "temp_high" : 70,
+    "temp_high" : 75,
     "alert_interval" : 1,
     "volume" : 70,
     "phone_numbers" : [
