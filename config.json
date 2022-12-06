@@ -1,14 +1,18 @@
 {
     "temp_low" : 60,
-    "temp_high" : 75,
+    "temp_high" : 65,
     "alert_interval" : 1,
     "volume" : 70,
     "phone_numbers" : [
-        123,
-        456
+        2072726463,
+        2075304481
     ],
     "emails" : [
-        "@gmail",
-        "email"
-    ]
+        "connor.bray@maine.edu"
+    ],
+    "auth" : {
+        "email" : "connor.bray@maine.edu",
+        "password" : "3D!k4C&b"
+    },
+    "alert_message" : "\nETHAN STOP CHANGING THE FUCKING THERMOSTAT. Current temp: "
 }
