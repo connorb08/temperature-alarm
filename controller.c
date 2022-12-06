@@ -11,10 +11,12 @@ int main(int argc, char **argv) {
 	double temp;
 	int fd;
 
-	fd = init_display();
 	temp = read_temp();
+
+	fd = init_display();
 	write_display(fd, temp);
 	printf("%lf", temp);
+	shutdown_display(fd);
 
 	if (argc > 1) {
 		if (strcmp(argv[1], "c") == 0) {
