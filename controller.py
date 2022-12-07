@@ -23,18 +23,15 @@ class Controller():
         self.phones = config['phone_numbers']
         self.auth = (config['auth']['email'],config['auth']['password'])
         self.message = config['alert_message']
-    
-    def shutdown(self):
-        args = ['c']
-        return self.getTemp(args)
 
     def alert(self, temp):
+        # calculate difference in minutes between now and last alert
         now = datetime.datetime.now()
         difference = now - self.lastAlert
-        mins = difference.total_seconds() / 60
+        mins = difference.total_seconds() / 60 
         
+        # Check if the system has already sent out an alert recently
         if (mins > self.alert_interval):
-            print("alert")
             self.sendNotifications(temp)
             self.playAudio()
             self.lastAlert = datetime.datetime.now()
@@ -48,7 +45,6 @@ class Controller():
         return
 
     def sendNotifications(self, temp):
-        
         for email in self.emails:
             self.sendEmail(email, temp)
         for number in self.phones:
@@ -71,55 +67,47 @@ class Controller():
         server.login(self.auth[0], self.auth[1])
         server.sendmail(self.auth[0], to, msg)
 
-    def getTemp(self, args=[]):
-        args.insert(0, './controller')
+    def getTemp(self):
+        args = ['./controller']
         for i in range(2):
             try:
                 popen = subprocess.Popen(args, stdout=subprocess.PIPE)
                 popen.wait()
                 out = popen.stdout.read()
+                # remove unnecessary bits from stdout
+                out = round(float(str(out)[2:-1]), 2)
                 break
             except FileNotFoundError: # Build file if not found
                 subprocess.run(['make'])
                 continue
-        return float(str(out)[2:-1])
-
-    def tester(self, temp=0):
-
-        args = ['./test']
-        if temp != 0:
-            temp = str(temp)
-            args.append(temp)
-        
-        popen = subprocess.Popen(args, stdout=subprocess.PIPE)
-        popen.wait()
-        out = popen.stdout.read()
-        out = round(float(str(out)[2:-1]), 2)
         return out
 
 def main():
+    
     x = Controller()
     temps = []
+    
     while (True):
         try:
-            if (len(temps) > 0):
-                temp = x.tester(temps[-1])
-            else:
-                temp = x.tester()
-            print(temp)
+            
+            temp = x.getTemp()
             temps.append(temp)
             avg = (sum(temps) / len(temps))
-            print(f"avg: {avg}")
-            s = x.message + str(temp) + "F"
-            print(s)
+            print(f"Current temp: {temp} | Average: {avg}")
+
+            # Only keep the past 10 recorded temps in the array
             if (len(temps) >= 10):
-                temps.pop(0)
+                
+                temps.pop(0) # remove oldest temp from array
+                
+                #Send alert if the average is out of range
                 if ((avg < x.temp_low) or (avg > x.temp_high)):
                     x.alert(temp)
+            
             time.sleep(1)
+
         except KeyboardInterrupt:
-            print("\nShutting down display and exiting!")
-            x.shutdown()
+            print("\nExiting!")
             exit(1)
 
 if __name__ == '__main__':

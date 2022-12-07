@@ -1,18 +1,18 @@
 {
     "temp_low" : 60,
-    "temp_high" : 65,
-    "alert_interval" : 1,
+    "temp_high" : 70,
+    "alert_interval" : 30,
     "volume" : 70,
     "phone_numbers" : [
-        2072726463,
-        2075304481
+        12345,
+        67891
     ],
     "emails" : [
-        "connor.bray@maine.edu"
+        "alert@domain.tld"
     ],
     "auth" : {
-        "email" : "connor.bray@maine.edu",
-        "password" : "3D!k4C&b"
+        "email" : "email@domain.tld",
+        "password" : "password"
     },
-    "alert_message" : "\nETHAN STOP CHANGING THE FUCKING THERMOSTAT. Current temp: "
+    "alert_message" : "\nETHAN STOP CHANGING THE THERMOSTAT. Current temp: "
 }
